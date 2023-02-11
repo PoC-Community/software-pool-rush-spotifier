@@ -22,7 +22,7 @@ model Artists {
   id      String   @id @default(uuid()) @db.Uuid
   name    String
   musics  Musics[]
-  genre   Genres
+  genre   Genres[]
   Users   Users?   @relation(fields: [usersId], references: [id])
   usersId String?  @db.Uuid
 }
@@ -30,6 +30,7 @@ model Artists {
 model Musics {
   id         String     @id @default(uuid()) @db.Uuid
   name       String
+  genre      Genres[]
   artists    Artists    @relation(references: [id], fields: [artistsId])
   artistsId  String     @db.Uuid
   Playlist   Playlists? @relation(fields: [playlistId], references: [id])
