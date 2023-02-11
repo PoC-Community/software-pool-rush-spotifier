@@ -46,7 +46,7 @@ export function backLogin(app: express.Application)
                 message: "Logged In"
             }
             res.status(StatusCodes.ACCEPTED).send(object);
-        } else res.status(StatusCodes.ACCEPTED).send("Not Founded");
+        } else res.status(StatusCodes.CONFLICT).send("Not Founded");
     });
 }
 
@@ -68,7 +68,7 @@ export function backRegister(app: express.Application)
                 profile: req.body,
                 message: "Registered"
             }
-            res.status(StatusCodes.ACCEPTED).send(object);
-        } else res.status(StatusCodes.ACCEPTED).send("Username already taken");
+            res.status(StatusCodes.CREATED).send(object);
+        } else res.status(StatusCodes.CONFLICT).send("Username already taken");
     });
 }

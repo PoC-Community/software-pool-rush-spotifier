@@ -3,14 +3,12 @@ import z from "zod"
 import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { data, MyUser, Playlist } from "../usefull";
-import { UserInfo } from "os";
 
-function middleWare(req: express.Request, res: express.Response, next: express.NextFunction)
-{
+function middleWare(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
         z.string().parse(req.header("token"));
-        z.string().parse(req.header("name"));
-        z.string().optional().parse(req.header("id"));
+        z.string().parse(req.body.name);
+        z.string().optional().parse(req.body.id);
         next();
     } catch (err) {
         console.log("[Playlist] Bad Request");
@@ -18,8 +16,7 @@ function middleWare(req: express.Request, res: express.Response, next: express.N
     }
 }
 
-function getUserInfoFromToken(token: string): jwt.JwtPayload | undefined
-{
+function getUserInfoFromToken(token: string): jwt.JwtPayload | undefined {
     try {
         const infos = jwt.verify(token, "Secret") as jwt.JwtPayload;
         return infos;
@@ -29,38 +26,75 @@ function getUserInfoFromToken(token: string): jwt.JwtPayload | undefined
 }
 
 export function playlistAdd(app: express.Application) {
-    app.get('/playlist/add', middleWare, (req, res) => {
+    app.post('/playlist/add', middleWare, (req, res) => {
         const token = req.header("token");
+        const name = req.body.name;
+        const id = req.body.id;
 
-        let tmp: any = getUserInfoFromToken(token || "");
-        if (!tmp || !tmp.email) res.status(StatusCodes.BAD_GATEWAY).send("Error while getting token");
-        let userInfo = tmp as JwtPayload;
+        // Check si le token recupere bien les userInfos
+        const userInfo = getUserInfoFromToken(token || "");
+        if (!userInfo || !userInfo.email) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error while getting token");
+            return;
+        }
 
-        
+        // Recupere les données de l'utilisateur via userInfo
+        const userData = data.find((e) => e.email === userInfo.email);
+        if (!userData) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error while searching for user");
+            return;
+        }
 
+        // Check si le nom de la playlist existe
+        const myPlaylist = userData.playlists?.find((e) => name === e.name);
+        if (!myPlaylist) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error playlist dont exist");
+            return;
+        }
+
+        // Check si l'ID de la musique est bien dans la requete
+        if (!id || !Number(id)) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error music don't exist");
+            return;
+        }
+
+        myPlaylist.musics?.push(Number(id));
+
+        console.log(myPlaylist);
         res.status(StatusCodes.OK).send("Music added in the playlist");
     });
 }
 
 export function playlistCreate(app: express.Application) {
-    app.get('/playlist/create', middleWare, (req, res) => {
+    app.post('/playlist/create', middleWare, (req, res) => {
         const token = req.header("token");
+        const name = req.body.name;
 
-        let tmp: any = getUserInfoFromToken(token || "");
-        if (!tmp || !tmp.email) res.status(StatusCodes.BAD_GATEWAY).send("Error while getting token");
-        let userInfo = tmp as JwtPayload;
+        const userInfo = getUserInfoFromToken(token || "");
+        if (!userInfo || !userInfo.email) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error while getting token");
+            return;
+        }
 
-        tmp = data.find((e) => e.email === userInfo.email);
-        if (!tmp) res.status(StatusCodes.BAD_GATEWAY).send("Error while searching for user");
-        let userData = tmp as MyUser;
+        const userData = data.find((e) => e.email === userInfo.email);
+        if (!userData) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error while searching for user");
+            return;
+        }
+
+        const myPlaylist = userData.playlists?.find((e) => name === e.name);
+        if (myPlaylist) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error playlist already exist");
+            return;
+        }
 
         let newPlaylist: Playlist = {};
-        newPlaylist.name = req.header("name");
+        newPlaylist.name = name;
         newPlaylist.musics = [];
 
         userData.playlists?.push(newPlaylist);
 
         console.log(userData);
-        res.status(StatusCodes.OK).send(`Playlist ${req.header("name")} created`);
+        res.status(StatusCodes.OK).send(`Playlist ${name} created`);
     });
 }
