@@ -2,6 +2,7 @@ import express from "express";
 import { StatusCodes } from "http-status-codes";
 import z from "zod"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 import { MyUser, data } from "../usefull";
 
@@ -40,7 +41,7 @@ export function backLogin(app: express.Application)
 
         if (isFound) {
             const object = {
-                token: "Token",
+                token: jwt.sign(req.body, "Secret"),
                 profile: req.body,
                 message: "Logged In"
             }
@@ -52,7 +53,7 @@ export function backLogin(app: express.Application)
 export function backRegister(app: express.Application)
 {
     app.post('/register', middleWare, (req, res) => {
-        
+
         const isFound = data.find((e) => e.email === req.body.email);
 
         if (!isFound) {
@@ -62,7 +63,7 @@ export function backRegister(app: express.Application)
             data.push(newUser);
 
             const object = {
-                token: "Token",
+                token: jwt.sign(req.body, "Secret"), 
                 profile: req.body,
                 message: "Registered"
             }
