@@ -13,3 +13,21 @@ export async function createPlaylist(data: CreatePlaylist) {
         },
     });
 }
+
+export async function getPlaylist(data: CreatePlaylist) {
+    const playlists = await prisma.playlists.findMany({
+        where: {
+            name: data.name,
+            usersId: data.userId
+        }
+    });
+}
+
+export async function deletePlaylist(data: CreatePlaylist) {
+    const deletelists = await prisma.playlists.deleteMany({
+        where: {
+            name: data.name,
+            usersId: data.userId
+        }
+    });
+}
