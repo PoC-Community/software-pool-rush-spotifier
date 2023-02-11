@@ -85,66 +85,99 @@ class _InfoContainer extends GetView<PlayerController> {
           child: SizedBox(
             height: isDirection ? 50 : null,
             child: isDirection
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Image.network(
-                            image,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.fill,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(name,
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium),
-                              Row(
-                                children: [
-                                  Text(
-                                      "$type ${artist != null ? "• $artist" : ""}"),
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        splashColor: Colors.transparent,
-                        icon: Icon(
-                          Icons.settings,
-                          color: Theme.of(context).unselectedWidgetColor,
-                        ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      Image.network(
-                        image,
-                        width: 150,
-                        height: 150,
-                        fit: BoxFit.fill,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(name),
-                    ],
-                  ),
+                ? _DataRow(image: image, name: name, type: type, artist: artist)
+                : _DataSquare(image: image, name: name),
           ),
         ),
       );
     } else {
       return Container();
     }
+  }
+}
+
+class _DataSquare extends StatelessWidget {
+  const _DataSquare({
+    Key? key,
+    required this.image,
+    required this.name,
+  }) : super(key: key);
+
+  final String image;
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.network(
+          image,
+          width: 150,
+          height: 150,
+          fit: BoxFit.fill,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(name),
+      ],
+    );
+  }
+}
+
+class _DataRow extends StatelessWidget {
+  const _DataRow({
+    Key? key,
+    required this.image,
+    required this.name,
+    required this.type,
+    required this.artist,
+  }) : super(key: key);
+
+  final String image;
+  final String name;
+  final String type;
+  final String? artist;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.network(
+              image,
+              width: 50,
+              height: 50,
+              fit: BoxFit.fill,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name, style: Theme.of(context).textTheme.bodyMedium),
+                Row(
+                  children: [
+                    Text("$type ${artist != null ? "• $artist" : ""}"),
+                  ],
+                )
+              ],
+            ),
+          ],
+        ),
+        IconButton(
+          onPressed: () {},
+          splashColor: Colors.transparent,
+          icon: Icon(
+            Icons.settings,
+            color: Theme.of(context).unselectedWidgetColor,
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:myapp/models/artist.dart';
+import 'package:myapp/models/user.dart';
 
 class JsonUser {
   JsonUser({
@@ -40,6 +42,19 @@ class Api {
     //   return true;
     // }
     // return false;
+    Get.put(
+      //Add login respons when true
+      User(
+        id: "",
+        email: email,
+        username: "",
+        password: password,
+        genre: [],
+        musicsLiked: [],
+        artistsLiked: [],
+        playlistLiked: [],
+      ),
+    );
     return true;
   }
 
