@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:myapp/models/artist.dart';
@@ -17,7 +19,7 @@ class JsonUser {
 }
 
 class Api {
-  static final String _url = "http://127.0.0.1:8080";
+  static final String _url = "http://10.0.2.2:8080";
   static String _token = "";
 
   static Future<bool> health() async {
@@ -26,80 +28,73 @@ class Api {
   }
 
   static Future<bool> login(String email, String password) async {
-    // final response = await http.post(
-    //   Uri.parse("$_url/auth/login"),
-    //   body: jsonEncode(
-    //     JsonUser(
-    //       email: email,
-    //       pass: password,
-    //     ),
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   _token = response.body;
-    //   return true;
-    // }
-    // return false;
-    Get.put(
-      //Add login respons when true
-      User(
-        id: "",
-        email: email,
-        username: "",
-        password: password,
-        genre: [],
-        musicsLiked: [],
-        artistsLiked: [],
-        playlistLiked: [],
+    final response = await http.post(
+      Uri.parse("$_url/login"),
+      body: jsonEncode(
+        JsonUser(
+          email: email,
+          pass: password,
+        ),
       ),
     );
-    return true;
+    if (response.statusCode == 202) {
+      _token = response.body;
+      Get.put(
+        User(
+          id: "",
+          email: email,
+          username: "",
+          password: password,
+          genre: [],
+          musicsLiked: [],
+          artistsLiked: [],
+          playlistLiked: [],
+        ),
+      );
+      return true;
+    }
+
+    return false;
   }
 
   static Future<bool> register(String email, String password) async {
-    // final response = await http.post(
-    //   Uri.parse("$_url/auth/register"),
-    //   body: jsonEncode(
-    //     JsonUser(
-    //       email: email,
-    //       pass: password,
-    //     ).toJson(),
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   _token = response.body;
-    //   return true;
-    // }
-    // return false;
-    Get.put(
-      //Add register response when true
-      User(
-        id: "",
-        email: email,
-        username: "",
-        password: password,
-        genre: [],
-        musicsLiked: [],
-        artistsLiked: [],
-        playlistLiked: [],
+    final response = await http.post(
+      Uri.parse("$_url/auth/register"),
+      body: jsonEncode(
+        JsonUser(
+          email: email,
+          pass: password,
+        ).toJson(),
       ),
     );
+    if (response.statusCode == 201) {
+      _token = response.body;
+      Get.put(
+        User(
+          id: "",
+          email: email,
+          username: "",
+          password: password,
+          genre: [],
+          musicsLiked: [],
+          artistsLiked: [],
+          playlistLiked: [],
+        ),
+      );
+      return true;
+    }
+    return false;
+  }
+
+  static Future<bool> createPlaylist() async {
     return true;
   }
 
-  static Future<bool> createArtist(Artist artist) async {
-    // final response = await http.post(
-    //   Uri.parse("$_url/artist"),
-    //   headers: {"auth": _token},
-    //   body: jsonEncode(
-    //     artist.toJson(),
-    //   ),
-    // );
-    // if (response.statusCode == 200) {
-    //   _token = response.body;
-    //   return true;
-    // }
-    // return false;
+  static Future<bool> deletePlaylist() async {
+    return true;
+  }
+
+  static Future<bool> editPlayList() async {
     return true;
   }
 
