@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 
 import { backPlay } from "./endpoints/play";
 import { backLogin, backRegister } from "./endpoints/auth";
-import { backPlaylistAdd } from "./endpoints/playlists";
+import { playlistAdd, playlistCreate } from "./endpoints/playlists";
 
 
 function server() {
@@ -25,7 +25,8 @@ function server() {
     backLogin(app);
     backPlay(app);
     backRegister(app);
-    backPlaylistAdd(app);
+    playlistAdd(app);
+    playlistCreate(app);
 }
 
 server()

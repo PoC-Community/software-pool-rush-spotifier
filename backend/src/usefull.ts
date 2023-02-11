@@ -13,10 +13,10 @@ type Artist = {
     musics:     Music[];
 }
 
-type Playlist = {
-    id:         number;
-    name:       string;
-    musics:     Music[];
+export type Playlist = {
+    id?:        number;
+    name?:      string;
+    musics?:    number[];
 }
 
 type UserData = {
@@ -28,7 +28,7 @@ export type MyUser = {
     username?:          string;
     password?:          string;
     musicsLiked?:       Music[];
-    playlistsLiked?:    Playlist[];
+    playlists?:         Playlist[];
     data?:              UserData;
 }
 

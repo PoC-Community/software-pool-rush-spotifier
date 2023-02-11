@@ -60,6 +60,7 @@ export function backRegister(app: express.Application)
             let newUser: MyUser = {};
             newUser.email = req.body.email;
             newUser.password = req.body.password;
+            newUser.playlists = [];
             data.push(newUser);
 
             const object = {
