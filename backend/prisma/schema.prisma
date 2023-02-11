@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model Users {
+  id             String      @id @default(uuid()) @db.Uuid
+  email          String
+  username       String
+  password       String
+  MusicsLiked    Musics[]
+  ArtistsLiked   Artists[]
+  PlaylistsLiked Playlists[]
+  style          Genres[]
+}
+
+model Artists {
+  id      String   @id @default(uuid()) @db.Uuid
+  name    String
+  musics  Musics[]
+  genre   Genres
+  Users   Users?   @relation(fields: [usersId], references: [id])
+  usersId String?  @db.Uuid
+}
+
+model Musics {
+  id         String     @id @default(uuid()) @db.Uuid
+  name       String
+  artists    Artists    @relation(references: [id], fields: [artistsId])
+  artistsId  String     @db.Uuid
+  Playlist   Playlists? @relation(fields: [playlistId], references: [id])
+  playlistId String?    @db.Uuid
+  Users      Users?     @relation(fields: [usersId], references: [id])
+  usersId    String?    @db.Uuid
+}
+
+model Playlists {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  playlists Musics[]
+  Users     Users?   @relation(fields: [usersId], references: [id])
+  usersId   String?  @db.Uuid
+}
+
+enum Genres {
+  POP
+  ROCK
+  RAP
+  CLASSIC
+  HIPHOP
+  JAZZ
+}
