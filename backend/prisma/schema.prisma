@@ -41,7 +41,7 @@ model Musics {
 
 model Playlists {
   id        String   @id @default(uuid()) @db.Uuid
-  name      String
+  name      String   @unique
   playlists Musics[]
   Users     Users?   @relation(fields: [usersId], references: [id])
   usersId   String?  @db.Uuid
