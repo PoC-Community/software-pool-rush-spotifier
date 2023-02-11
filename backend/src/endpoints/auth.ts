@@ -5,6 +5,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
 import { MyUser, data } from "../usefull";
+import { CreateUser, createUser, getUser } from "database/user";
 
 
 const salt = "$2b$10$7M09q7sLDmAsGM8BMu8Mhu";
@@ -19,25 +20,27 @@ function middleWare(req: express.Request, res: express.Response, next: express.N
 {
     const shematic = z.object({
         email: z.string(),
-        password: z.string()
+        password: z.string(),
+        username: z.string()
     });
 
     try {
         shematic.parse(req.body);
         next();
     } catch (err) {
-        console.log("[Login/Register] Bad Request");
-        res.status(StatusCodes.BAD_REQUEST).send("Email / Password not valid");
+        console.log("[Auth] Bad Request");
+        res.status(StatusCodes.BAD_REQUEST).send("Email/Password/Username not valid");
     }
 }
 
 export function backLogin(app: express.Application)
 {
-    app.post('/login', middleWare, (req, res) => {
+    app.post('/login', middleWare, async (req, res) => {
 
         const hash = pleaseHashMeThat(req.body.password);
 
-        const isFound = data.find((e) => e.email === req.body.email && e.password === req.body.password);
+        const isFound = await getUser(req.body.email);
+        // data.find((e) => e.email === req.body.email && e.password === req.body.password);
 
         if (isFound) {
             const object = {
@@ -57,14 +60,11 @@ export function backRegister(app: express.Application)
         const isFound = data.find((e) => e.email === req.body.email);
 
         if (!isFound) {
-            let newUser: MyUser = {};
-            newUser.email = req.body.email;
-            newUser.password = req.body.password;
-            newUser.playlists = [];
-            data.push(newUser);
+            let newUser: CreateUser = { email: req.body.email, username: req.body.username, password: req.body.password };
+            createUser(newUser);
 
             const object = {
-                token: jwt.sign(req.body, "Secret"), 
+                token: jwt.sign(req.body, "Secret"),
                 profile: req.body,
                 message: "Registered"
             }

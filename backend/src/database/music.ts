@@ -1,7 +1,7 @@
 import { Genres, Prisma } from '@prisma/client';
 import prisma from './client';
 
-type CreateMusic = {
+export type CreateMusic = {
     name: string
     artistId: string
     genre: Genres

@@ -1,6 +1,6 @@
 import prisma from './client';
 
-type CreatePlaylist = {
+export type CreatePlaylist = {
     name: string
     userId: string
 };
