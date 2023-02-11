@@ -4,6 +4,7 @@ import 'package:myapp/components/app_theme.dart';
 import 'package:myapp/pages/authpage.dart';
 import 'package:myapp/pages/login.dart';
 import 'package:myapp/pages/navigation.dart';
+import 'package:myapp/pages/preference.dart';
 import 'package:myapp/pages/register.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MySpotify extends StatelessWidget {
         "/login": (context) => const LoginPage(),
         "/register": (context) => const RegisterPage(),
         "/main": (context) => const NavigationPage(),
+        "/pref": (context) => const Preference(),
       },
     );
   }

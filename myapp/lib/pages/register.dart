@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     _controllerEmail.text,
                     _controllerPassword.text,
                   )) {
-                    Navigator.pushNamed(context, "/main");
+                    Navigator.pushNamed(context, "/pref");
                   }
                 }
               },

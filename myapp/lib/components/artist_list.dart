@@ -167,7 +167,10 @@ class _DataRow extends StatelessWidget {
                 Text(name, style: Theme.of(context).textTheme.bodyMedium),
                 Row(
                   children: [
-                    Text("$type ${artist != null ? "• $artist" : ""}"),
+                    Text(
+                      "$type ${artist != null ? "• $artist" : ""}",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ],
                 )
               ],

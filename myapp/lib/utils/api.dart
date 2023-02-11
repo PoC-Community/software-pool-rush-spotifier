@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:myapp/models/artist.dart';
@@ -74,7 +72,7 @@ class Api {
     // }
     // return false;
     Get.put(
-      //Add register respons when true
+      //Add register response when true
       User(
         id: "",
         email: email,
