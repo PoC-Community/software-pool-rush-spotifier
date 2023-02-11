@@ -73,6 +73,19 @@ class Api {
     //   return true;
     // }
     // return false;
+    Get.put(
+      //Add register respons when true
+      User(
+        id: "",
+        email: email,
+        username: "",
+        password: password,
+        genre: [],
+        musicsLiked: [],
+        artistsLiked: [],
+        playlistLiked: [],
+      ),
+    );
     return true;
   }
 

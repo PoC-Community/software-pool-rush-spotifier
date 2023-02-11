@@ -119,7 +119,12 @@ class _DataSquare extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Text(name),
+        Text(
+          name,
+          style: TextStyle(
+            color: Theme.of(context).highlightColor,
+          ),
+        ),
       ],
     );
   }

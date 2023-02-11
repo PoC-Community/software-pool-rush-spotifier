@@ -15,8 +15,9 @@ ThemeData _myTheme = ThemeData(
   cardColor: const Color.fromARGB(255, 31, 31, 31),
   splashColor: const Color.fromARGB(255, 223, 238, 18),
   unselectedWidgetColor: const Color.fromARGB(255, 104, 102, 102),
-  textTheme: _textTheme,
+  textTheme: _textTheme.apply(displayColor: Colors.white),
   iconTheme: const IconThemeData(color: Colors.white),
+  highlightColor: Colors.white,
 );
 
 ThemeData get mainTheme {

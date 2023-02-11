@@ -8,12 +8,14 @@ class Artist {
       required this.nationality,
       required this.photoUrl,
       required this.rating});
+
   String name;
   int rating;
   String nationality;
   String musicGender;
   String photoUrl;
   List<Music> musics;
+
   Artist.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         musics = [],
