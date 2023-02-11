@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:myapp/components/spotifyButtons.dart';
+import 'package:myapp/models/player.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -9,6 +11,12 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  @override
+  void initState() {
+    Get.put(PlayerController());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

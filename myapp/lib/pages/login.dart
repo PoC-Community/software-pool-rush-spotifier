@@ -11,8 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
             MyTextFiled(
               hintText: "Password",
               controller: _controllerPassword,
+              obscureText: true,
             ),
             SpotifyButton(
               onPressed: () async {

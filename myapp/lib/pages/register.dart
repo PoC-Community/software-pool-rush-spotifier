@@ -41,10 +41,12 @@ class _RegisterPageState extends State<RegisterPage> {
             MyTextFiled(
               hintText: "Password",
               controller: _controllerPassword,
+              obscureText: true,
             ),
             MyTextFiled(
               hintText: "Confirm Password",
               controller: _controllerConfirmPassword,
+              obscureText: true,
             ),
             SpotifyButton(
               onPressed: () async {

@@ -5,9 +5,11 @@ class MyTextFiled extends StatelessWidget {
     super.key,
     this.hintText,
     this.controller,
+    this.obscureText = false,
   });
   final TextEditingController? controller;
   final String? hintText;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class MyTextFiled extends StatelessWidget {
             border: Border.all(color: Theme.of(context).hoverColor),
             borderRadius: BorderRadius.circular(10)),
         child: TextField(
+          obscureText: obscureText,
           controller: controller,
           decoration: InputDecoration(
             border: InputBorder.none,
