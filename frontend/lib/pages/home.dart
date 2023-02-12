@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
+<<<<<<< HEAD
 import 'package:myapp/components/artist_list.dart';
+=======
+>>>>>>> origin/main
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Column(
@@ -25,6 +29,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+=======
+    return const Scaffold(
+      body: Center(
+        child: Text("Home"),
+>>>>>>> origin/main
       ),
     );
   }
