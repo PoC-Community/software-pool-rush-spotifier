@@ -22,8 +22,7 @@ class MySpotify extends StatefulWidget {
 class _MySpotifyState extends State<MySpotify> {
   @override
   void initState() {
-    Get.put(
-      User(
+    Get.put<User>(User(
         id: "",
         email: "",
         username: "",
@@ -31,17 +30,15 @@ class _MySpotifyState extends State<MySpotify> {
         genre: [],
         musicsLiked: [],
         artistsLiked: [],
-        playlistLiked: [],
-      ),
-    );
-    super.initState();
+        playlistLiked: []));
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Spotifier',
+      title: 'Spotifiak',
       theme: mainTheme,
       home: const AuthPage(),
       initialRoute: "/",
