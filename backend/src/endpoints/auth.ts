@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
 import { MyUser, data } from "../usefull";
-import { CreateUser, createUser, getUser } from "database/user";
+import { CreateUser, createUser, getUser } from "../database/user";
 
 
 const salt = "$2b$10$7M09q7sLDmAsGM8BMu8Mhu";
@@ -40,7 +40,6 @@ export function backLogin(app: express.Application)
         const hash = pleaseHashMeThat(req.body.password);
 
         const isFound = await getUser(req.body.email);
-        // data.find((e) => e.email === req.body.email && e.password === req.body.password);
 
         if (isFound) {
             const object = {
