@@ -249,8 +249,23 @@ class _PopupSongInfo extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text("Add to playlist"),
-              )
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.add),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Add to playlist",
+                      style: TextStyle(
+                        color: Theme.of(context).highlightColor,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
