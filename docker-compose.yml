@@ -14,13 +14,13 @@ services:
     ports:
       - 8080:8080
 
-  frontend:
-    build: frontend/
-    restart: on-failure
-    ports:
-      - 3000:3000
-    env_file:
-      - frontend/.env
+  # frontend:
+  #   build: frontend/
+  #   restart: on-failure
+  #   ports:
+  #     - 3000:3000
+  #   env_file:
+  #     - frontend/.env
 
   db:
     image: "postgres:alpine"
