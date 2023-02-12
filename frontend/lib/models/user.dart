@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:get/state_manager.dart';
 import 'package:myapp/models/artist.dart';
 import 'package:myapp/models/music.dart';
@@ -37,13 +36,4 @@ class User extends GetxController {
     email = mail;
     password = pass;
   }
-=======
-class User {
-  User({
-    required this.id,
-    required this.email,
-  });
-  String id;
-  String email;
->>>>>>> origin/main
 }
