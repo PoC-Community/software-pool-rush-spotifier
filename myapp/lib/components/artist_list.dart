@@ -178,7 +178,19 @@ class _DataRow extends StatelessWidget {
           ],
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            showGeneralDialog(
+              context: context,
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return _PopupSongInfo(
+                  image: image,
+                  name: name,
+                  type: type,
+                  artist: artist,
+                );
+              },
+            );
+          },
           splashColor: Colors.transparent,
           icon: Icon(
             Icons.settings,
@@ -186,6 +198,63 @@ class _DataRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _PopupSongInfo extends StatelessWidget {
+  const _PopupSongInfo({
+    required this.image,
+    required this.name,
+    required this.type,
+    required this.artist,
+  });
+
+  final String image;
+  final String name;
+  final String type;
+  final String? artist;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.cancel),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Image.network(
+                image,
+                width: 300,
+                height: 300,
+                fit: BoxFit.fill,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text("$name --- $type"),
+              if (artist != null) Text(artist!),
+              const SizedBox(
+                height: 20,
+              ),
+              TextButton(
+                onPressed: () {},
+                child: const Text("Add to playlist"),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

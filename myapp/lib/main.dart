@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/components/app_theme.dart';
+import 'package:myapp/models/user.dart';
 import 'package:myapp/pages/authpage.dart';
 import 'package:myapp/pages/login.dart';
 import 'package:myapp/pages/navigation.dart';
@@ -11,8 +12,32 @@ void main() {
   runApp(const MySpotify());
 }
 
-class MySpotify extends StatelessWidget {
+class MySpotify extends StatefulWidget {
   const MySpotify({super.key});
+
+  @override
+  State<MySpotify> createState() => _MySpotifyState();
+}
+
+class _MySpotifyState extends State<MySpotify> {
+  @override
+  void initState() {
+    Get.put(
+      User(
+        id: "",
+        email: "",
+        username: "",
+        password: "",
+        genre: [],
+        musicsLiked: [],
+        artistsLiked: [],
+        playlistLiked: [],
+      ),
+    );
+    super.initState();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

@@ -13,53 +13,29 @@ class JsonUser {
   String email;
   String pass;
   Map<String, dynamic> toJson() => {
-        'password': pass,
         'email': email,
+        'password': pass,
       };
 }
 
 class Api {
-  static final String _url = "http://10.0.2.2:8080";
+  static const String _url = "http://localhost:3000";
   static String _token = "";
 
   static Future<bool> health() async {
-    final response = await http.get(Uri.parse("$_url/health"));
+    final response = await http.get(
+      Uri.parse("$_url/health"),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    );
     return response.statusCode == 200;
   }
 
   static Future<bool> login(String email, String password) async {
     final response = await http.post(
       Uri.parse("$_url/login"),
-      body: jsonEncode(
-        JsonUser(
-          email: email,
-          pass: password,
-        ),
-      ),
-    );
-    if (response.statusCode == 202) {
-      _token = response.body;
-      Get.put(
-        User(
-          id: "",
-          email: email,
-          username: "",
-          password: password,
-          genre: [],
-          musicsLiked: [],
-          artistsLiked: [],
-          playlistLiked: [],
-        ),
-      );
-      return true;
-    }
-
-    return false;
-  }
-
-  static Future<bool> register(String email, String password) async {
-    final response = await http.post(
-      Uri.parse("$_url/auth/register"),
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(
         JsonUser(
           email: email,
@@ -67,20 +43,34 @@ class Api {
         ).toJson(),
       ),
     );
+    if (response.statusCode == 202) {
+      final data = (jsonDecode(response.body));
+      _token = data["token"];
+      Get.find<User>().setuserinfo(email, password);
+
+      return true;
+    }
+
+    return false;
+  }
+
+  static Future<bool> register(String email, String password) async {
+    String json = jsonEncode(
+      JsonUser(
+        email: email,
+        pass: password,
+      ).toJson(),
+    );
+    final response = await http.post(
+      Uri.parse("$_url/register"),
+      headers: {"Content-Type": "application/json"},
+      body: json,
+    );
+
     if (response.statusCode == 201) {
-      _token = response.body;
-      Get.put(
-        User(
-          id: "",
-          email: email,
-          username: "",
-          password: password,
-          genre: [],
-          musicsLiked: [],
-          artistsLiked: [],
-          playlistLiked: [],
-        ),
-      );
+      final data = (jsonDecode(response.body));
+      _token = data["token"];
+      Get.find<User>().setuserinfo(email, password);
       return true;
     }
     return false;
