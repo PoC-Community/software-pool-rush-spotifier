@@ -1,7 +1,7 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 import { backPlay } from "./endpoints/play";
 import { backLogin, backRegister } from "./endpoints/auth";

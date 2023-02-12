@@ -4,7 +4,6 @@ import z from "zod"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
-import { MyUser, data } from "../usefull";
 import { CreateUser, createUser, getUser } from "../database/user";
 
 
@@ -18,14 +17,10 @@ function pleaseHashMeThat(password: string): string
 
 function middleWare(req: express.Request, res: express.Response, next: express.NextFunction)
 {
-    const shematic = z.object({
-        email: z.string(),
-        password: z.string(),
-        username: z.string()
-    });
-
     try {
-        shematic.parse(req.body);
+        z.string().parse(req.body.email);
+        z.string().parse(req.body.password);
+        z.string().optional().parse(req.body.username);
         next();
     } catch (err) {
         console.log("[Auth] Bad Request");
@@ -38,13 +33,12 @@ export function backLogin(app: express.Application)
     app.post('/login', middleWare, async (req, res) => {
 
         const hash = pleaseHashMeThat(req.body.password);
-
         const isFound = await getUser(req.body.email);
 
         if (isFound) {
             const object = {
                 token: jwt.sign(req.body, "Secret"),
-                profile: req.body,
+                profile: isFound,
                 message: "Logged In"
             }
             res.status(StatusCodes.ACCEPTED).send(object);
@@ -54,17 +48,18 @@ export function backLogin(app: express.Application)
 
 export function backRegister(app: express.Application)
 {
-    app.post('/register', middleWare, (req, res) => {
+    app.post('/register', middleWare, async (req, res) => {
 
-        const isFound = data.find((e) => e.email === req.body.email);
+        const isFound = await getUser(req.body.email);
+        console.log(isFound);
 
-        if (!isFound) {
+        if (isFound === null && req.body.username) {
             let newUser: CreateUser = { email: req.body.email, username: req.body.username, password: req.body.password };
             createUser(newUser);
 
             const object = {
                 token: jwt.sign(req.body, "Secret"),
-                profile: req.body,
+                profile: newUser,
                 message: "Registered"
             }
             res.status(StatusCodes.CREATED).send(object);
