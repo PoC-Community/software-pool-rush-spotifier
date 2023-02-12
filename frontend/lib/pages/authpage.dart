@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:myapp/components/spotifyButtons.dart';
+import 'package:myapp/models/player.dart';
+import 'package:myapp/models/user.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -9,6 +12,11 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  @override
+  void initState() {
+    Get.put(PlayerController());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +46,7 @@ class _AuthPageState extends State<AuthPage> {
               SpotifyButton(
                 key: const Key("registerButton"),
                 text: "Register",
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pushNamed(context, "/register");
                 },
                 width: MediaQuery.of(context).size.width / 3,

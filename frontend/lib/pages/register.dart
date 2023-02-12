@@ -11,6 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool _error = false;
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerConfirmPassword =
@@ -41,11 +42,23 @@ class _RegisterPageState extends State<RegisterPage> {
             MyTextFiled(
               hintText: "Password",
               controller: _controllerPassword,
+              obscureText: true,
             ),
             MyTextFiled(
               hintText: "Confirm Password",
               controller: _controllerConfirmPassword,
+              obscureText: true,
             ),
+            if (_error)
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Error Email already exist",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
             SpotifyButton(
               onPressed: () async {
                 if (_controllerPassword.text ==
@@ -54,7 +67,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     _controllerEmail.text,
                     _controllerPassword.text,
                   )) {
-                    Navigator.pushNamed(context, "/main");
+                    Navigator.pushNamed(context, "/pref");
+                  } else {
+                    setState(() {
+                      _error = true;
+                    });
                   }
                 }
               },
