@@ -22,6 +22,10 @@ class Api {
   static const String _url = "http://localhost:3000";
   static String _token = "";
 
+  static get token {
+    return _token;
+  }
+
   static Future<bool> health() async {
     final response = await http.get(
       Uri.parse("$_url/health"),
