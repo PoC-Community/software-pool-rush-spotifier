@@ -2,7 +2,9 @@ import express from "express"
 import z from "zod"
 import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
+
 import { data, MyUser, Playlist } from "../usefull";
+import { CreatePlaylist, createPlaylist } from "../database/playlists";
 
 function middleWare(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
@@ -58,9 +60,11 @@ export function playlistAdd(app: express.Application) {
             return;
         }
 
-        myPlaylist.musics?.push(Number(id));
-
-        console.log(myPlaylist);
+        // myPlaylist.musics?.push(Number(id));
+        // console.table(myPlaylist);
+        // console.table(myPlaylist.musics);
+        // console.table("Done\n");
+        
         res.status(StatusCodes.OK).send("Music added in the playlist");
     });
 }
@@ -69,6 +73,11 @@ export function playlistCreate(app: express.Application) {
     app.post('/playlist/create', middleWare, (req, res) => {
         const token = req.header("token");
         const name = req.body.name;
+
+        if (!token) {
+            res.status(StatusCodes.BAD_REQUEST).send("Error bad Token");
+            return;
+        }
 
         const userInfo = getUserInfoFromToken(token || "");
         if (!userInfo || !userInfo.email) {
@@ -88,13 +97,18 @@ export function playlistCreate(app: express.Application) {
             return;
         }
 
-        let newPlaylist: Playlist = {};
-        newPlaylist.name = name;
-        newPlaylist.musics = [];
+        const playlistObject: CreatePlaylist = {name: name, userId: token};
+        createPlaylist(playlistObject);
 
-        userData.playlists?.push(newPlaylist);
+        // let newPlaylist: Playlist = {};
+        // newPlaylist.name = name;
+        // newPlaylist.musics = [];
 
-        console.log(userData);
+        // userData.playlists?.push(newPlaylist);
+        // console.table(userData);
+        // console.table(userData.playlists);
+        // console.log("Done\n");
+
         res.status(StatusCodes.OK).send(`Playlist ${name} created`);
     });
 }

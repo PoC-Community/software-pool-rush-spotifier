@@ -1,14 +1,16 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
+import dotenv from "dotenv";
 
 import { backPlay } from "./endpoints/play";
 import { backLogin, backRegister } from "./endpoints/auth";
 import { playlistAdd, playlistCreate } from "./endpoints/playlists";
 
+dotenv.config();
 
 function server() {
-    const port = 3000;
+    const port = process.env.API_PORT || 3000;
     const app = express();
 
     app.all('/health', (_, res) => {
