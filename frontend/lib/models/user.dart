@@ -32,8 +32,9 @@ class User extends GetxController {
   List<Playlists> playlistLiked;
   List<Genre> genre;
 
-  void setuserinfo(String mail, String pass) {
+  void setuserinfo(String mail, String pass, String user) {
     email = mail;
     password = pass;
+    username = user;
   }
 }

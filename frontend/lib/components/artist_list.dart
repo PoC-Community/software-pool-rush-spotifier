@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/models/artist.dart';
+import 'package:myapp/models/music.dart';
 import 'package:myapp/models/player.dart';
+import 'package:myapp/models/user.dart';
 import 'package:myapp/utils/api.dart';
 
 class ArtistList extends StatefulWidget {
@@ -20,7 +22,7 @@ class _ArtistListState extends State<ArtistList> {
   @override
   void initState() {
     super.initState();
-    list = Api.getArtist();
+    list = Api.getMusic();
   }
 
   @override
@@ -202,7 +204,7 @@ class _DataRow extends StatelessWidget {
   }
 }
 
-class _PopupSongInfo extends StatelessWidget {
+class _PopupSongInfo extends GetView<User> {
   const _PopupSongInfo({
     required this.image,
     required this.name,
@@ -248,7 +250,41 @@ class _PopupSongInfo extends StatelessWidget {
                 height: 20,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Add to"),
+                          content: SizedBox(
+                            height: 300,
+                            width: 200,
+                            child: ListView.builder(
+                              itemCount: controller.playlistLiked.length,
+                              itemBuilder: (context, index) {
+                                return TextButton(
+                                  onPressed: () {
+                                    controller.playlistLiked[index].musics.add(
+                                      Music(
+                                        name: name,
+                                        rating: 0,
+                                        url: image,
+                                        artistId: artist!,
+                                        musicGender: type,
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    controller.playlistLiked[index].name,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      });
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

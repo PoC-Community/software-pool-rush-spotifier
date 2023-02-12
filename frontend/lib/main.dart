@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:myapp/components/app_theme.dart';
 import 'package:myapp/models/user.dart';
@@ -8,7 +9,8 @@ import 'package:myapp/pages/navigation.dart';
 import 'package:myapp/pages/preference.dart';
 import 'package:myapp/pages/register.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MySpotify());
 }
 

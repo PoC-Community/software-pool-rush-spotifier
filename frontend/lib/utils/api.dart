@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:myapp/models/artist.dart';
@@ -9,17 +10,20 @@ class JsonUser {
   JsonUser({
     required this.email,
     required this.pass,
+    this.username,
   });
   String email;
   String pass;
+  String? username;
   Map<String, dynamic> toJson() => {
         'email': email,
         'password': pass,
+        'username': username,
       };
 }
 
 class Api {
-  static const String _url = "http://localhost:3000";
+  static final String _url = dotenv.env['REACT_APP_API_URL']!;
   static String _token = "";
 
   static Future<bool> health() async {
@@ -46,7 +50,7 @@ class Api {
     if (response.statusCode == 202) {
       final data = (jsonDecode(response.body));
       _token = data["token"];
-      Get.find<User>().setuserinfo(email, password);
+      Get.find<User>().setuserinfo(email, password, "");
 
       return true;
     }
@@ -54,10 +58,12 @@ class Api {
     return false;
   }
 
-  static Future<bool> register(String email, String password) async {
+  static Future<bool> register(
+      String email, String password, String username) async {
     String json = jsonEncode(
       JsonUser(
         email: email,
+        username: username,
         pass: password,
       ).toJson(),
     );
@@ -70,7 +76,7 @@ class Api {
     if (response.statusCode == 201) {
       final data = (jsonDecode(response.body));
       _token = data["token"];
-      Get.find<User>().setuserinfo(email, password);
+      Get.find<User>().setuserinfo(email, password, username);
       return true;
     }
     return false;
@@ -88,7 +94,7 @@ class Api {
     return true;
   }
 
-  static Future<List<Artist>> getArtist() async {
+  static Future<List<Artist>> getMusic() async {
     //   final response = await http.get(
     //     Uri.parse("$_url/artist"),
     //     headers: {

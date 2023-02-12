@@ -12,6 +12,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool _error = false;
+  final TextEditingController _controllerUser = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerConfirmPassword =
@@ -34,6 +35,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                 ),
               ),
+            ),
+            MyTextFiled(
+              hintText: "User",
+              controller: _controllerUser,
             ),
             MyTextFiled(
               hintText: "Email",
@@ -66,6 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   if (await Api.register(
                     _controllerEmail.text,
                     _controllerPassword.text,
+                    _controllerUser.text,
                   )) {
                     Navigator.pushNamed(context, "/pref");
                   } else {
