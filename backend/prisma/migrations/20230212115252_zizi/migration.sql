@@ -16,7 +16,7 @@ CREATE TABLE "Users" (
 CREATE TABLE "Artists" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "genre" "Genres" NOT NULL,
+    "genre" "Genres"[],
     "usersId" UUID,
 
     CONSTRAINT "Artists_pkey" PRIMARY KEY ("id")
@@ -26,6 +26,7 @@ CREATE TABLE "Artists" (
 CREATE TABLE "Musics" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
+    "genre" "Genres"[],
     "artistsId" UUID NOT NULL,
     "playlistId" UUID,
     "usersId" UUID,
@@ -41,6 +42,18 @@ CREATE TABLE "Playlists" (
 
     CONSTRAINT "Playlists_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Artists_name_key" ON "Artists"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Musics_name_key" ON "Musics"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Playlists_name_key" ON "Playlists"("name");
 
 -- AddForeignKey
 ALTER TABLE "Artists" ADD CONSTRAINT "Artists_usersId_fkey" FOREIGN KEY ("usersId") REFERENCES "Users"("id") ON DELETE SET NULL ON UPDATE CASCADE;

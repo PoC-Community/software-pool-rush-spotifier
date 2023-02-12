@@ -2,26 +2,6 @@ version: '3'
 
 services:
 
-  backend:
-    build: backend/
-    networks:
-      - database
-    restart: on-failure
-    depends_on:
-      - db
-    env_file:
-      - backend/.env
-    ports:
-      - 8080:8080
-
-  # frontend:
-  #   build: frontend/
-  #   restart: on-failure
-  #   ports:
-  #     - 3000:3000
-  #   env_file:
-  #     - frontend/.env
-
   db:
     image: "postgres:alpine"
     networks:
@@ -33,6 +13,26 @@ services:
     ports:
       - ${DB_PORT}:${DB_PORT}
     restart: on-failure
+
+  backend:
+    build: backend/
+    networks:
+      - database
+    restart: on-failure
+    depends_on:
+      - db
+    env_file:
+      - backend/.env
+    ports:
+      - 8080:8080
+  # frontend:
+  #   build: frontend/
+  #   restart: on-failure
+  #   ports:
+  #     - 3000:3000
+  #   env_file:
+  #     - frontend/.env
+
 
 networks:
   database:
